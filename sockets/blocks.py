@@ -1,5 +1,4 @@
 # encoding: utf-8
-import asyncio
 
 from server import kaspad_client, sio
 
@@ -15,14 +14,26 @@ async def config():
             return
 
         global BLOCKS_CACHE
-        BLOCKS_CACHE.append(block_info)
+
+        emit_info = {
+            'block_hash': block_info["verboseData"]["hash"],
+            'difficulty': block_info["verboseData"]["difficulty"],
+            'blueScore': block_info["header"]["blueScore"],
+            'timestamp': block_info["header"]["timestamp"],
+            'txs': [{
+                'txId': x["verboseData"]["transactionId"],
+                'outputs': [(output["verboseData"]["scriptPublicKeyAddress"], output["amount"]) for output in
+                            x["outputs"]]
+            } for x in block_info["transactions"]]
+        }
+
+        BLOCKS_CACHE.append(emit_info)
         if len(BLOCKS_CACHE) > 50:
             BLOCKS_CACHE.pop(0)
 
-        await sio.emit("new-block", block_info, room="blocks")
+        await sio.emit("new-block", emit_info, room="blocks")
 
     await kaspad_client.notify("notifyBlockAddedRequest", None, on_new_block)
-
 
 
 @sio.on("last-blocks")
