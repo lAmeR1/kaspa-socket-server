@@ -25,7 +25,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: lamer1/kaspa-socket-server:${{github.ref_name}}, lamer1/kaspa-socket-server:latest
+          tags: lamer1/kaspa-socket-server:testnet
           file: ./docker/Dockerfile
           build-args: |
             version=${{github.ref_name}}

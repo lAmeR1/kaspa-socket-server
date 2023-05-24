@@ -53,4 +53,4 @@ if __name__ == '__main__':
     if os.getenv("DEBUG"):
         import uvicorn
 
-        uvicorn.run(app)
+        uvicorn.run(app, port=8001)
