@@ -32,7 +32,6 @@ async def config():
         if len(BLOCKS_CACHE) > 10:
             BLOCKS_CACHE.pop(0)
 
-        print("emit")
         await sio.emit("new-block", emit_info, room="blocks")
 
     await kaspad_client.notify("notifyBlockAddedRequest", None, on_new_block)
