@@ -20,15 +20,16 @@ async def config():
             'difficulty': block_info["verboseData"]["difficulty"],
             'blueScore': block_info["header"]["blueScore"],
             'timestamp': block_info["header"]["timestamp"],
+            'txCount': len(block_info["transactions"]),
             'txs': [{
                 'txId': x["verboseData"]["transactionId"],
                 'outputs': [(output["verboseData"]["scriptPublicKeyAddress"], output["amount"]) for output in
-                            x["outputs"]]
-            } for x in block_info["transactions"]]
+                            x["outputs"][-20:]]
+            } for x in block_info["transactions"][-20:]]
         }
 
         BLOCKS_CACHE.append(emit_info)
-        if len(BLOCKS_CACHE) > 50:
+        if len(BLOCKS_CACHE) > 10:
             BLOCKS_CACHE.pop(0)
 
         await sio.emit("new-block", emit_info, room="blocks")
