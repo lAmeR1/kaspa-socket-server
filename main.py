@@ -12,10 +12,11 @@ from sockets import blocks
 from sockets.blockdag import periodical_blockdag
 from sockets.bluescore import periodical_blue_score
 from sockets.coinsupply import periodic_coin_supply
+from sockets.mempool import periodical_mempool
 
 print(
     f"Loaded: {sockets.join_room}"
-    f"{periodic_coin_supply} {periodical_blockdag} {periodical_blue_score}")
+    f"{periodic_coin_supply} {periodical_blockdag} {periodical_blue_score} {periodical_mempool}")
 
 BLOCKS_TASK = None  # type: Task
 
